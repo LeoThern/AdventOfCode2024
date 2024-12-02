@@ -26,17 +26,20 @@ def is_safe(report:list):
 def main():
     reports = read_reports()
     n_safe = 0
+    n_safe_with_dampener = 0
     for report in reports:
         if is_safe(report):
             n_safe += 1
+            n_safe_with_dampener += 1
         else:
             #sorry for brute force, was late on time
             for i in range(len(report)):
                 new_report = report[:i] + report[i+1:]
                 if is_safe(new_report):
-                    n_safe +=1
+                    n_safe_with_dampener += 1
                     break
 
-    print(n_safe)
+    print('Task 1:',n_safe)
+    print('Task 2:',n_safe_with_dampener)
 
 main()
