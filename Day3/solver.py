@@ -10,6 +10,7 @@ def main():
 	with open('input.txt') as file:
 		memory = file.read()
 
+	# Task 1
 	matches = find_all_mul_operands(memory)
 	total = sum([int(a) * int(b) for a, b in matches])
 
@@ -26,8 +27,8 @@ def main():
 		dont_index = memory.find('don\'t()', next_do_index + 1)
 
 	# remove deactivated parts in reverse so indexing doesnt change
-	for dont_do_part in reversed(dont_do_parts):
-		memory = memory[:dont_do_part[0]] + memory[dont_do_part[1]:]
+	for start, end in reversed(dont_do_parts):
+		memory = memory[:start] + memory[end:]
 
 	matches = find_all_mul_operands(memory)
 	total = sum([int(a) * int(b) for a, b in matches])
