@@ -7,7 +7,7 @@ https://adventofcode.com/
 - [X] Day 5
 - [ ] Day 6
 - [X] Day 7
-- [ ] Day 8
+- [X] Day 8
 - [ ] Day 9
 - [ ] Day 10
 - [ ] Day 11
