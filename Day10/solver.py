@@ -21,28 +21,12 @@ class Map:
             raise OutOfBoundsException()
         return self.board[location.y][location.x]
 
-    def iter_all_cells(self):
+    def iter_all_locations(self):
         for y in range(self.y_size):
             for x in range(self.x_size):
                 yield Location(x, y)
 
-    def count_paths_till_9(self, start:Location, current_index=0):
-        try:
-            value = int(self.get_cell(start))
-        except OutOfBoundsException:
-            return 0
-        if value != current_index:
-            return 0
-        if current_index == 9 and value == 9:
-            return 1
-        counter = 0
-        counter += self.count_paths_till_9(Location(start.x, start.y - 1), current_index + 1)
-        counter += self.count_paths_till_9(Location(start.x + 1, start.y), current_index + 1)
-        counter += self.count_paths_till_9(Location(start.x - 1, start.y), current_index + 1)
-        counter += self.count_paths_till_9(Location(start.x, start.y + 1), current_index + 1)
-        return counter
-
-    def score_trailhead(self, start:Location, current_index=0):
+    def find_destinations(self, start:Location, current_index=0):
         try:
             value = int(self.get_cell(start))
         except OutOfBoundsException:
@@ -52,23 +36,24 @@ class Map:
         if current_index == 9 and value == 9:
             return [start]
         destinations = []
-        destinations.extend(self.score_trailhead(Location(start.x, start.y - 1), current_index + 1))
-        destinations.extend(self.score_trailhead(Location(start.x + 1, start.y), current_index + 1))
-        destinations.extend(self.score_trailhead(Location(start.x - 1, start.y), current_index + 1))
-        destinations.extend(self.score_trailhead(Location(start.x, start.y + 1), current_index + 1))
+        destinations.extend(self.find_destinations(Location(start.x, start.y - 1), current_index + 1))
+        destinations.extend(self.find_destinations(Location(start.x + 1, start.y), current_index + 1))
+        destinations.extend(self.find_destinations(Location(start.x - 1, start.y), current_index + 1))
+        destinations.extend(self.find_destinations(Location(start.x, start.y + 1), current_index + 1))
         return destinations
 
 def main():
     with open('input.txt') as file:
         map = Map(file.read())
 
-    possible_trailheads = [location for location in map.iter_all_cells() if map.get_cell(location) == '0']
+    possible_trailheads = [location for location in map.iter_all_locations() if map.get_cell(location) == '0']
 
-    total_paths = 0
-    total_score = 0
+    total_paths, total_score = 0, 0
     for head in possible_trailheads:
-        total_score += len(set(map.score_trailhead(head)))
-        total_paths += map.count_paths_till_9(head)
+        destinations = map.find_destinations(head)
+        total_score += len(set(destinations))
+        total_paths += len(destinations)
+
     print("Total Score:", total_score)
     print("Total Paths:", total_paths)
 
