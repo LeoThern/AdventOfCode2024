@@ -10,7 +10,7 @@ https://adventofcode.com/2024/
 - [X] Day 8 *
 - [X] Day 9 *
 - [X] Day 10
-- [ ] Day 11
+- [X] Day 11
 - [ ] Day 12
 - [ ] Day 13
 - [ ] Day 14
